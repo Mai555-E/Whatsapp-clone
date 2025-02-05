@@ -1,26 +1,19 @@
-class ChatModel {
-  final String senderName, message;
-  ChatModel({required this.senderName, required this.message});
-}
-
 class Message {
-  Message(
-      {required this.id,
-      required this.senderId,
-      required this.content,
-      required this.timeStamp,
-      required this.chatId,
-      this.mediaUrl,
-      this.messageType,
-      this.messageContent});
-
+  final DateTime timeStamp;
+  Map<String, bool>? messageContent;
+  final String? mediaUrl, messageType;
   final String senderId, chatId, content, id;
 
-  final String? mediaUrl, messageType;
-
-  final DateTime timeStamp;
-
-  Map<String, bool>? messageContent;
+  Message({
+    required this.id,
+    required this.senderId,
+    required this.content,
+    required this.timeStamp,
+    required this.chatId,
+    this.mediaUrl,
+    this.messageType,
+    this.messageContent,
+  });
 
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(

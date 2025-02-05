@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../resources/constants.dart';
-import '../resources/routes.dart';
-import 'widgets/custom_text_form_field.dart';
-import 'widgets/shareable_widgets_signin_signup.dart';
+import '../../resources/constants.dart';
+import '../../resources/routes.dart';
+import '../widgets/custom_text_form_field.dart';
+import '../widgets/shareable_widgets_signin_signup.dart';
 
 class RegisterScreen extends StatefulWidget {
-  static final formKey = GlobalKey<FormState>();
   const RegisterScreen({super.key});
 
   @override
@@ -17,26 +16,16 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   static final formKey = GlobalKey<FormState>();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final usernameController = TextEditingController();
-  final phoneController = TextEditingController();
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    usernameController.dispose();
-    phoneController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: ConstantColor.backgroundColor, body: _buildRegisterBody());
+    return Scaffold(
+      body: _buildRegisterBody(),
+      backgroundColor: ConstantColor.backgroundColor,
+    );
   }
 
-  SingleChildScrollView _buildRegisterBody() {
+  Widget _buildRegisterBody() {
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
@@ -48,11 +37,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               CustomImage(width: 200.w, height: 200.h),
               const CustomTextAuth(title: "Register To New Account"),
-              CustomTextFormField(labelText: "UserName", icon: Icons.person, emailController: usernameController),
-              CustomTextFormField(labelText: "Email", icon: Icons.email_sharp, emailController: emailController),
-              CustomTextFormField(labelText: "Phone", icon: Icons.phone_android_rounded, emailController: phoneController),
-              CustomTextFormField(labelText: "Password", icon: Icons.person, emailController: passwordController),
-              AuthButton(formKey: formKey, label: "Register", email: emailController, password: passwordController),
+              CustomTextFormField(label: "UserName", icon: Icons.person),
+              CustomTextFormField(label: "Email", icon: Icons.email_sharp),
+              CustomTextFormField(label: "Phone", icon: Icons.phone_android_rounded),
+              CustomTextFormField(label: "Password", icon: Icons.person),
+              //
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size.fromHeight(50),
+                  maximumSize: Size.fromHeight(150),
+                  backgroundColor: ConstantColor.buttonsColor,
+                ),
+                child: Text("Register", style: TextStyle(color: Colors.white, fontSize: 25.h)),
+              ),
               _buildLoginRow()
             ],
           ),
@@ -65,8 +63,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Text("Already have an account?", style: TextStyle(fontSize: 15.sp)),
       TextButton(
-          onPressed: () => Get.offNamed(NamedRoutes.loginScreen),
-          child: Text("Login", style: TextStyle(fontSize: 16.sp, color: ConstantColor.buttonsColor)))
+        onPressed: () => Get.offNamed(NamedRoutes.loginScreen),
+        child: Text("Login", style: TextStyle(fontSize: 16.sp, color: ConstantColor.buttonsColor)),
+      )
     ]);
   }
 }
@@ -80,7 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   //   if (formKey.currentState!.validate()) {
                   //     // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: SnackBar(content: Text("Login Successfully"))));
                   //     await FirebaseAuth.instance
-                  //         .createUserWithEmailAndPassword(email: emailController.text, password: passwordController.text);
+                  //         .createUserWithEmailAndPassword(email: controller.text, password: passwordController.text);
 
                   //     Get.toNamed(NamedRoutes.loginScreen);
                   //   }
@@ -95,7 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     }
                     try {
                       await supabase.auth.signUp(
-                          email: emailController.text, password: passwordController.text, data: {'username': usernameController.text});
+                          email: controller.text, password: passwordController.text, data: {'username': usernameController.text});
                       //Get.toNamed(NamedRoutes.loginScreen);
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Sign up success")));
                       Get.toNamed(LoginScreen(phoneNumber: phoneController.text).toString());
@@ -111,7 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   //   if (!isValid) {
   //     return;
   //   }
-  //   final email = emailController.text;
+  //   final email = controller.text;
   //   final password = passwordController.text;
   //   final username = usernameController.text;
   //   try {

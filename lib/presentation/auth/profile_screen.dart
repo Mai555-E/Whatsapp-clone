@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../page/main_view.dart';
+import '../main/main_view.dart';
 import '../resources/constants.dart';
 import '../resources/images.dart';
 import 'widgets/custom_text_form_field.dart';
@@ -19,8 +18,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final phoneController = TextEditingController();
-  final usernameController = TextEditingController();
   static XFile? imageFile;
   Future<void> getImage() async {
     final picker = ImagePicker();
@@ -35,13 +32,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
-  void dispose() {
-    usernameController.dispose();
-    phoneController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: ConstantColor.backgroundColor,
@@ -49,8 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             elevation: 2.h,
             shadowColor: const Color.fromARGB(115, 53, 38, 38),
             backgroundColor: ConstantColor.backgroundColor,
-            leading: IconButton(
-                onPressed: () => Get.off(const MainView()), icon: const Icon(Icons.arrow_back, color: ConstantColor.secondaryColor)),
+            leading: IconButton(onPressed: () => Get.off(const MainView()), icon: const Icon(Icons.arrow_back, color: ConstantColor.secondaryColor)),
             title: Text("Profile", style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.w500))),
         body: _buildBodyProfile());
   }
@@ -80,10 +69,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ))
           ]),
           const Divider(),
-          CustomTextFormField(icon: Icons.person, labelText: "Name", emailController: usernameController),
-
-          CustomTextFormField(icon: Icons.phone_android_rounded, labelText: "Phone", emailController: phoneController),
-
+          CustomTextFormField(icon: Icons.person, label: "Name"),
+          CustomTextFormField(icon: Icons.phone_android_rounded, label: "Phone"),
           _buildElevatedButton()
         ],
       ),
@@ -92,23 +79,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   ElevatedButton _buildElevatedButton() {
     return ElevatedButton.icon(
+        onPressed: () async {},
         icon: const Icon(Icons.save, color: Colors.white),
-        onPressed: () async {
-          if (usernameController.text.isEmpty || phoneController.text.isEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill all fields")));
-          }
-
-          try {
-            await Supabase.instance.client
-                .from("profiles")
-                .insert({"username": usernameController.text, "phone": phoneController.text, "password": ""}).select();
-
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("data saved successfully")));
-            Get.back();
-          } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Error while saving data")));
-          }
-        },
         style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(55), backgroundColor: ConstantColor.buttonsColor),
         label: Text("Save Profile", style: TextStyle(color: Colors.white, fontSize: 20.sp)));
   }

@@ -1,43 +1,45 @@
 class User {
-  User(
-      {this.lastSeen,
-      required this.number,
-      this.status,
-      required this.id,
-      required this.username,
-      required this.createdAt,
-      required this.profilePicture,
-      this.contactsId = const [],
-      this.groupId = const []});
+  User({
+    this.status,
+    this.lastSeen,
+    required this.id,
+    required this.name,
+    required this.number,
+    required this.createdAt,
+    required this.profilePicture,
+    this.groupId = const [],
+    this.contactsId = const [],
+  });
 
-  final DateTime? createdAt;
   final DateTime? lastSeen;
-  final String id, username, number;
-  final String? profilePicture, status;
+  final DateTime? createdAt;
   final List<String> groupId;
   final List<String> contactsId;
+  final String id, name, number;
+  final String? profilePicture, status;
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-        id: json["id"],
-        status: json["status"],
-        number: json["number"],
-        groupId: json["groupId"],
-        lastSeen: json["lastSeen"],
-        username: json["username"],
-        createdAt: json["createdAt"],
-        contactsId: List<String>.from(json["contactId"]) ,
-        profilePicture: json["profilePicture"]);
+      id: json["id"],
+      name: json["name"],
+      status: json["status"],
+      number: json["number"],
+      groupId: json["groupId"],
+      lastSeen: json["lastSeen"],
+      createdAt: json["createdAt"],
+      profilePicture: json["profilePicture"],
+      contactsId: List<String>.from(json["contactId"]),
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
       "id": id,
+      "name": name,
       "number": number,
       "status": status,
       "groupId": groupId,
       "lastSeen": lastSeen,
-      "username": username,
       "createdAt": createdAt,
       "contactId": contactsId,
       "profilePicture": profilePicture,

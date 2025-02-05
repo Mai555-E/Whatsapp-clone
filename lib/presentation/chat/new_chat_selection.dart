@@ -1,59 +1,43 @@
-import '../auth/data/model/status_model.dart';
-import 'chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:whatsapp_clone_app/domain/models/chat.dart';
+import 'package:whatsapp_clone_app/presentation/resources/routes.dart';
 
-import '../resources/constants.dart';
 import '../auth/data/lists/status_list.dart';
-import '../page/custom_popup_menu_button.dart';
+import '../auth/data/model/status_model.dart';
+import '../main/custom_popup_menu_button.dart';
+import '../resources/constants.dart';
+import 'chat_screen.dart';
 
-class NewChatSelection extends StatefulWidget {
+class NewChatSelection extends StatelessWidget {
   final bool isGroup;
   const NewChatSelection({super.key, required this.isGroup});
 
-  @override
-  State<NewChatSelection> createState() => _NewChatSelectionState();
-}
-
-class _NewChatSelectionState extends State<NewChatSelection> {
-  static String? selectedContact;
-  static String? selectedImage;
-  List<Contact> contacts = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    _getContacts();
-  }
-
-  Future<void> _getContacts() async {
+  Future<List<Contact>> _getContacts() async {
     if (await Permission.contacts.request().isGranted) {
-      final fetchedContacts = await FlutterContacts.getContacts(withProperties: true);
-
-      setState(() => contacts = fetchedContacts);
-    } else {}
+      return await FlutterContacts.getContacts(withProperties: true);
+    } else {
+      return [];
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: _buildBody(),
       appBar: _buildAppBar(),
       backgroundColor: ConstantColor.secondBackground,
-      body: _buildBody(),
-      
-      floatingActionButton:(widget.isGroup == "New Group")? _buildFloatingActionButton():null,
+      floatingActionButton: isGroup ? _buildFloatingActionButton() : null,
     );
   }
 
   FloatingActionButton _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () {
-
-        Get.off(()=> ChatScreen(imageUrl: selectedImage!, name: selectedContact!));
-        ModelStatus(name: selectedContact!, image: selectedImage!, time: "");
+        // Get.off(() => ChatScreen(imageUrl: selectedImage!, name: selectedContact!));
+        // ModelStatus(name: selectedContact!, image: selectedImage!, time: "");
       },
       backgroundColor: ConstantColor.secondaryColor,
       child: const Icon(Icons.arrow_forward, color: Colors.white),
@@ -61,39 +45,45 @@ class _NewChatSelectionState extends State<NewChatSelection> {
   }
 
   Widget _buildBody() {
-    return contacts.isEmpty
-        ? const Center(child: CircularProgressIndicator())
-        : ListView.separated(
-            itemCount: contacts.length,
+    return FutureBuilder(
+      future: _getContacts(),
+      builder: (_, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.data!.isEmpty) {
+          return const Center(child: Text("No Contacts"));
+        } else {
+          return ListView.separated(
+            itemCount: snapshot.data!.length,
             padding: const EdgeInsets.symmetric(vertical: 10),
             separatorBuilder: (_, __) => const SizedBox(height: 12),
             itemBuilder: (_, index) => ListTile(
-              title: Text(contacts[index].displayName,
-                  style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w600, fontSize: 22)),
               leading: CircleAvatar(radius: 30, backgroundImage: NetworkImage(listStatus[index].image)),
-              subtitle: Text(contacts[index].phones.isNotEmpty ? contacts[index].phones.first.number : "No Phones"),
+              subtitle: Text(snapshot.data![index].phones.isNotEmpty ? snapshot.data![index].phones.first.number : "No Phones"),
+              title:
+                  Text(snapshot.data![index].displayName, style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w600, fontSize: 22)),
               onTap: () {
-                selectedContact = contacts[index].displayName;
-                selectedImage = listStatus[index].image;
-                if (widget.isGroup != "New Group") {
-                  Get.off(()=> ChatScreen(imageUrl: selectedImage!, name: selectedContact!));
-                  ModelStatus(name: selectedContact!, image: selectedImage!, time: "");
+                if (isGroup) {
+                  // Get.off(() => ChatScreen(imageUrl: selectedImage!, name: selectedContact!));
+                  // ModelStatus(name: selectedContact!, image: selectedImage!, time: "");
+                } else {
+                  // Get.offNamed(NamedRoutes.chatScreen, arguments: Chat.newChat(isGroup, participantsId));
                 }
               },
             ),
           );
+        }
+      },
+    );
   }
 
   AppBar _buildAppBar() {
     return AppBar(
-        title: const Text("Select Contact", style: TextStyle(fontWeight: FontWeight.w500)),
         elevation: 2,
         shadowColor: Colors.black,
         backgroundColor: ConstantColor.secondBackground,
-        actions: const [
-          Icon(Icons.search),
-          CustomPopupMenuButton(text1: "Report", text2: "Block", text3: "Clear chat", text4: "Export chat")
-        ]);
+        title: const Text("Select Contact", style: TextStyle(fontWeight: FontWeight.w500)),
+        actions: const [Icon(Icons.search), CustomPopupMenuButton(text1: "Report", text2: "Block", text3: "Clear chat", text4: "Export chat")]);
   }
 }
 

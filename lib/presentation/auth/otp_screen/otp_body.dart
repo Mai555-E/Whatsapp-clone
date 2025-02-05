@@ -63,7 +63,7 @@ class _OtpBodyState extends State<OtpBody> {
                     //   codeAutoRetrievalTimeout: (String verificationId) {},
                     // )
                     //     .then((val) {
-                    //   Get.toNamed(NamedRoutes.ChatsScreen);
+                    //   Get.toNamed(NamedRoutes.ChatsPage);
 
                     //   print(widget.phone);
                     // });

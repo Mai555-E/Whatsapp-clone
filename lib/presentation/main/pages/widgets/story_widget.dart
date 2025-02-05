@@ -1,4 +1,4 @@
-import '../../auth/data/lists/status_list.dart';
+import '../../../auth/data/lists/status_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:story_view/story_view.dart';
