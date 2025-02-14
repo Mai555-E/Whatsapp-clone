@@ -3,10 +3,10 @@ import 'package:whatsapp_clone_app/presentation/resources/constants.dart';
 
 List chatDetailsTiles = [mediaTypes, additions, shareInfo, additionalShareInfo];
 
-final List<({IconData icon, String media})> callsTypes = [
-  (icon: Icons.phone, media: "Audio"),
-  (icon: Icons.video_call, media: "Video"),
-  (icon: Icons.search, media: "Search"),
+final List<({IconData icon, String media,String number})> callsTypes = [
+  (icon: Icons.phone, media: "Audio", number: ""),
+  (icon: Icons.video_call, media: "Video", number: ""),
+  (icon: Icons.search, media: "Search", number: ""),
 ];
 
 final List<({String number, String media, IconData icon})> mediaTypes = [

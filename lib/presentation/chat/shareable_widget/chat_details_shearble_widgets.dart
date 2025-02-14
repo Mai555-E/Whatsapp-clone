@@ -23,6 +23,7 @@ class InfoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      
         minTileHeight: 30,
         textColor: color,
         contentPadding: EdgeInsets.only(right: 4,left: 10),
@@ -77,18 +78,32 @@ class CustomCards extends StatelessWidget {
   final List<dynamic> media;
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: SizedBox(
-        width: double.infinity,
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      child: Card(
         child: Column(
           children: ListTile.divideTiles(
             context: context,
             color: const Color(0xffefefef),
             tiles: List.generate(
-                media.length, (index) => InfoTile(title: media[index].media, subtitle: media[index].number, icon: media[index].icon)),
+                media.length, (index) => InfoTile(title: media[index].media, subtitle: media[index].number?? "", icon: media[index].icon)),
           ).toList(),
         ),
       ),
     );
   }
 }
+
+class CustomCircularAvatar extends StatelessWidget {
+  const CustomCircularAvatar({
+    super.key, required this.radius, required this.image,
+  });
+  final double radius;
+  final String image;
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(radius: radius, backgroundImage: AssetImage(image.toString()) // Add profile image
+        );
+  }
+}
+
