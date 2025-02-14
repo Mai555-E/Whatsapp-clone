@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:whatsapp_clone_app/presentation/chat/chat_details.dart';
 
 import '../auth/login/login_screen.dart';
 import '../auth/otp_screen.dart';
@@ -20,6 +21,7 @@ class NamedRoutes {
   static const String registerScreen = "/register";
 
   static const String mainView = "/main";
+  static const String chatDetails = "/chatDetails";
   static const String chatScreen = "/chatScreen";
   static const String newChatSelection = "/newChatSelection";
 }
@@ -34,9 +36,10 @@ class RouteGenerator {
       GetPage(name: NamedRoutes.registerScreen, page: () => const RegisterScreen()),
       GetPage(name: NamedRoutes.otpScreen, page: () => OtpScreen(phone: Get.arguments)),
 
+      GetPage(name: NamedRoutes.chatDetails, page: () => ChatDetails()),
       GetPage(name: NamedRoutes.mainView, page: () => const MainView()),
-      GetPage(name: NamedRoutes.newChatSelection, page: () => NewChatSelection(isGroup: Get.arguments)),
       GetPage(name: NamedRoutes.chatScreen, page: () => ChatScreen()),
+      GetPage(name: NamedRoutes.newChatSelection, page: () => NewChatSelection(isGroup: Get.arguments)),
     ];
   }
 }

@@ -12,4 +12,8 @@ class ConstantColor {
   static const chatBubble = Color(0xffe7fed8);
   static const chatSender = Color(0xff00a984);
   static const chatMessage = Color(0xfff4f6f9);
+  static const gray = Color(0xffE5E4E2);
+  static const green = Color(0xff467062);
+  static const pink= Color(0xffa84460);
+
 }

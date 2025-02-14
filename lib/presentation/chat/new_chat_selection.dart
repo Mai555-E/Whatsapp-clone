@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
-import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:whatsapp_clone_app/domain/models/chat.dart';
-import 'package:whatsapp_clone_app/presentation/resources/routes.dart';
 
 import '../auth/data/lists/status_list.dart';
-import '../auth/data/model/status_model.dart';
 import '../main/custom_popup_menu_button.dart';
 import '../resources/constants.dart';
-import 'chat_screen.dart';
 
 class NewChatSelection extends StatelessWidget {
   final bool isGroup;

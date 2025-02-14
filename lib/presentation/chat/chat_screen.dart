@@ -1,7 +1,8 @@
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:whatsapp_clone_app/presentation/resources/images.dart';
 
-import '../../domain/models/message.dart';
 import '../main/custom_popup_menu_button.dart';
 import '../resources/constants.dart';
 
@@ -28,7 +29,7 @@ class _ChatScreenState extends State<ChatScreen> {
       backgroundColor: ConstantColor.chatBackground,
       appBar: _buildAppBar(),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.only(top: 10),
         child: Column(
           children: [
             Expanded(
@@ -39,50 +40,30 @@ class _ChatScreenState extends State<ChatScreen> {
                 separatorBuilder: (_, __) => const SizedBox(height: 2),
                 itemBuilder: (_, index) => BubbleSpecialThree(
                   tail: true,
-                  text: "", // chatList[index].message.toString(),
+                  text: textController.text, // chatList[index].message.toString(),
                   textStyle: const TextStyle(color: Colors.black87, fontSize: 16),
                   isSender: false, // chatList[index].senderName == widget.name ? true : false
                   color: Colors.white, // chatList[index].senderName == widget.name ? ConstantColor.chatBubble : ConstantColor.chatMessage
                 ),
               ),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    width: 70,
-                    height: 60,
-                    margin: const EdgeInsets.only(left: 10, right: 5),
-                    padding: const EdgeInsets.only(left: 12, right: 10, top: 7),
-                    decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(30))),
-                    child: TextField(
-                      controller: textController,
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                        hintText: "Message",
-                        border: InputBorder.none,
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
-                      ),
-                    ),
+            Container(
+              width: double.maxFinite,
+              height: 50,
+              color: Colors.white,
+              child: Row(
+                spacing: 0,
+                children: [
+                  _buildMessageSender(),
+                  _buildMessageType(context),
+                  IconButton(onPressed: () {}, icon: Icon(Icons.camera_alt, color: ConstantColor.buttonsColor)),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.voice_chat, color: ConstantColor.buttonsColor),
+                    style: ButtonStyle(minimumSize: WidgetStatePropertyAll(Size(30, 30))),
                   ),
-                ),
-                Container(
-                  width: 50,
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  child: IconButton.filled(
-                    icon: const Icon(Icons.send, color: Colors.white, size: 25),
-                    style: IconButton.styleFrom(backgroundColor: ConstantColor.chatSender),
-                    onPressed: () => setState(
-                      () {
-                        if (textController.text.isNotEmpty) {
-                          // chatList.add(ChatModel(senderName: "Mai", message: textController.text));
-                        }
-                        textController.clear();
-                      },
-                    ),
-                  ),
-                )
-              ],
+                ],
+              ),
             )
           ],
         ),
@@ -90,15 +71,58 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  SizedBox _buildMessageType(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width / 1.7,
+      height: 40,
+      child: TextField(
+        controller: textController,
+        keyboardType: TextInputType.text,
+        decoration: const InputDecoration(
+          enabled: true,
+          hintMaxLines: 2,
+          hintText: "Message",
+          contentPadding: EdgeInsets.all(8),
+          fillColor: Colors.white70,
+          suffixIcon: Icon(Icons.chat, color: ConstantColor.buttonsColor),
+          border: InputBorder.none,
+          focusedErrorBorder:
+              OutlineInputBorder(borderSide: BorderSide(color: Color(0xffE5E4E2)), borderRadius: BorderRadius.all(Radius.circular(30))),
+          enabledBorder:
+              OutlineInputBorder(borderSide: BorderSide(color: Color(0xffE5E4E2)), borderRadius: BorderRadius.all(Radius.circular(30))),
+          focusedBorder:
+              OutlineInputBorder(borderSide: BorderSide(color: Color(0xffE5E4E2)), borderRadius: BorderRadius.all(Radius.circular(30))),
+          hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMessageSender() {
+    return IconButton(
+      onPressed: () => setState(
+        () {
+          if (textController.text.isNotEmpty) {
+            //chatList.add(ChatModel(senderName: "Mai", message: textController.text));
+          }
+          textController.clear();
+        },
+      ),
+      icon: Icon(Icons.send, color: ConstantColor.chatSender, size: 25),
+    );
+  }
+
   AppBar _buildAppBar() {
     return AppBar(
+      leading: IconButton(onPressed: () => Get.back(), icon: Icon(Icons.arrow_back_ios)),
       title: Row(
-        spacing: 10,
+        spacing: 8,
         children: [
-          // CircleAvatar(backgroundImage: NetworkImage(imageUrl), radius: 20),
-          // Text(name, style: const TextStyle(fontSize: 28)),
+          CircleAvatar(backgroundImage: AssetImage(NamedImages.profileSoloLeveling), radius: 20),
+          Text(name, style: const TextStyle(fontSize: 28)),
         ],
       ),
+      leadingWidth: 20,
       actions: const [
         SizedBox(
           width: 120,
@@ -119,6 +143,30 @@ class _ChatScreenState extends State<ChatScreen> {
 
 
 
+
+
+/*
+
+Container(
+                  width: 70,
+                  height: 60,
+                  margin: const EdgeInsets.only(left: 10, right: 5),
+                  padding: const EdgeInsets.only(left: 12, right: 10, top: 7),
+                  decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(30))),
+                  child: TextField(
+                    controller: textController,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      hintText: "Message",
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
+                    ),
+                  ),
+                ),
+
+
+
+*/
 
 // to display image
 //listStatus.firstWhere((e) => e.name == "Mai").image
