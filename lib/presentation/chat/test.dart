@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:whatsapp_clone_app/presentation/resources/images.dart';
 
 import '../resources/data.dart';
-import 'shareable_widget/chat_details_shearble_widgets.dart';
+import 'shareable_widget/chat_details_shareable_widgets.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

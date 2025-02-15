@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 
 class CustomText extends StatelessWidget {
-  const CustomText({super.key, required this.name, this.size, this.color, this.weight});
+  const CustomText({super.key, required this.name, this.size, this.color, this.weight, this.align = TextAlign.start, this.padding = 0});
   final String name;
   final double? size;
   final Color? color;
   final FontWeight? weight;
+  final TextAlign align;
+  final double padding;
   @override
   Widget build(BuildContext context) {
-    return Text(name, style: TextStyle(fontSize: size, fontWeight: weight));
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: padding),
+      child: Text(
+        name,
+        style: TextStyle(fontSize: size, fontWeight: weight),
+        textAlign: align,
+      ),
+    );
   }
 }
 
@@ -23,27 +32,22 @@ class InfoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      
         minTileHeight: 30,
         textColor: color,
-        contentPadding: EdgeInsets.only(right: 4,left: 10),
+        contentPadding: EdgeInsets.only(right: 4, left: 10),
         leading: (icon != null) ? Icon(icon) : null,
         title: CustomText(name: title, size: 15, weight: FontWeight.w500, color: color),
         trailing: (icon != null)
-
             ? SizedBox(
-              width: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                width: 60,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      subtitle!,
-                      style: const TextStyle(color: Colors.grey)
-                    ),
+                    Text(subtitle!, style: const TextStyle(color: Colors.grey)),
                     Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
                   ],
                 ),
-            )
+              )
             : Icon(icon, size: 16, color: Colors.grey),
         onTap: () {});
   }
@@ -57,10 +61,11 @@ class ContactButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: SizedBox(
-        width: MediaQuery.sizeOf(context).width / 5,
-        height: 70,
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 8),
+      width: MediaQuery.sizeOf(context).width / 5,
+      height: 76,
+      child: Card(
         child: Column(
           children: [IconButton(icon: Icon(icon, size: 30, color: Colors.green), onPressed: () {}), Text(label)],
         ),
@@ -86,7 +91,7 @@ class CustomCards extends StatelessWidget {
             context: context,
             color: const Color(0xffefefef),
             tiles: List.generate(
-                media.length, (index) => InfoTile(title: media[index].media, subtitle: media[index].number?? "", icon: media[index].icon)),
+                media.length, (index) => InfoTile(title: media[index].media, subtitle: media[index].number ?? "", icon: media[index].icon)),
           ).toList(),
         ),
       ),
@@ -96,7 +101,9 @@ class CustomCards extends StatelessWidget {
 
 class CustomCircularAvatar extends StatelessWidget {
   const CustomCircularAvatar({
-    super.key, required this.radius, required this.image,
+    super.key,
+    required this.radius,
+    required this.image,
   });
   final double radius;
   final String image;
@@ -106,4 +113,3 @@ class CustomCircularAvatar extends StatelessWidget {
         );
   }
 }
-

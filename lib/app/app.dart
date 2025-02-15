@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:whatsapp_clone_app/presentation/chat/chat_details.dart';
-import 'package:whatsapp_clone_app/presentation/chat/test.dart';
 
 import '../presentation/resources/routes.dart';
 import '../presentation/resources/theme.dart';

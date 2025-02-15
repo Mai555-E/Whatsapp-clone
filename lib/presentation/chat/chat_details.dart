@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
 import '../resources/data.dart';
 import '../resources/images.dart';
-import 'shareable_widget/chat_details_shearble_widgets.dart';
+import 'shareable_widget/chat_details_shareable_widgets.dart';
 
 class ChatDetails extends StatefulWidget {
   const ChatDetails({super.key});
-
   @override
   State<ChatDetails> createState() => _ChatDetailsState();
 }
@@ -23,18 +21,10 @@ class _ChatDetailsState extends State<ChatDetails> {
   }
 
   void _scrollListener() {
-    if (_sliverScroller.position.userScrollDirection == ScrollDirection.reverse) {
-      if (_isAvatarVisible) {
-        setState(() {
-          _isAvatarVisible = false;
-        });
-      }
-    } else if (_sliverScroller.position.userScrollDirection == ScrollDirection.forward) {
-      if (!_isAvatarVisible) {
-        setState(() {
-          _isAvatarVisible = true;
-        });
-      }
+    if (_sliverScroller.position.userScrollDirection == ScrollDirection.reverse && _isAvatarVisible) {
+      setState(() => _isAvatarVisible = false);
+    } else if (_sliverScroller.position.userScrollDirection == ScrollDirection.forward && !_isAvatarVisible) {
+      setState(() => _isAvatarVisible = true);
     }
   }
 
@@ -55,11 +45,10 @@ class _ChatDetailsState extends State<ChatDetails> {
             actions: [
               TextButton(onPressed: () {}, child: const Text("Edit", style: TextStyle(color: Colors.black))),
             ],
-            collapsedHeight: 35,
-            toolbarHeight: 35,
-            backgroundColor: Colors.black.withAlpha(0),
-            floating: false,
             pinned: true,
+            floating: false,
+            toolbarHeight: 35,
+            collapsedHeight: 35,
             flexibleSpace: FlexibleSpaceBar(
               title: Visibility(
                 visible: !_isAvatarVisible,
@@ -67,7 +56,7 @@ class _ChatDetailsState extends State<ChatDetails> {
                   spacing: 8,
                   children: [
                     CustomCircularAvatar(radius: 20, image: NamedImages.profileSoloLeveling),
-                    CustomText(name: "Mai", size: 18, weight: FontWeight.bold),
+                    CustomText(name: "Mai", size: 18, weight: FontWeight.bold)
                   ],
                 ),
               ),
@@ -76,7 +65,6 @@ class _ChatDetailsState extends State<ChatDetails> {
           SliverList(
               delegate: SliverChildListDelegate([
             Column(
-              spacing: 5,
               children: [
                 Visibility(
                   visible: _isAvatarVisible,
@@ -100,10 +88,9 @@ class _ChatDetailsState extends State<ChatDetails> {
                 CustomCards(media: mediaTypes),
                 CustomCards(media: additions),
                 CustomCards(media: contactDetails),
-                Container(
+                Align(
                     alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(left: 15),
-                    child: CustomText(name: "group in common", size: 15, weight: FontWeight.w500)),
+                    child: CustomText(name: "group in common", size: 15, weight: FontWeight.w500, padding: 20)),
                 CustomCards(media: commonGroup),
                 _buildCardShareInfo(context, shareInfo),
                 _buildCardShareInfo(context, additionalShareInfo)
@@ -117,14 +104,13 @@ class _ChatDetailsState extends State<ChatDetails> {
 
   Card _buildCardShareInfo(BuildContext context, final List<dynamic> media) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-      child: Column(
-          children: ListTile.divideTiles(
-        context: context,
-        tiles: List.generate(
-            media.length, (index) => InfoTile(title: media[index].media, subtitle: null, icon: null, color: media[index].color)),
-      ).toList()),
-    );
+        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+        child: Column(
+            children: ListTile.divideTiles(
+          context: context,
+          tiles: List.generate(
+              media.length, (index) => InfoTile(title: media[index].media, subtitle: null, icon: null, color: media[index].color)),
+        ).toList()));
   }
 
   Card _buildCardDescription() {
