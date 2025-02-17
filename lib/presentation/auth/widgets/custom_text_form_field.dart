@@ -1,23 +1,51 @@
 import 'package:flutter/material.dart';
+import '../base/controller.dart';
 
-import '../login/login_controller.dart';
+import '../base/validation.dart';
 
-class CustomTextFormField extends StatelessWidget {
+class CustomTextFormField extends StatefulWidget {
   final String label;
   final IconData icon;
-  const CustomTextFormField({super.key, required this.icon, required this.label});
+  final AuthController controller;
+  const CustomTextFormField({super.key, required this.icon, required this.label, required this.controller});
+
+  @override
+  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
+}
+
+class _CustomTextFormFieldState extends State<CustomTextFormField> {
+  bool _isObscured = true;
+  late final Validation _validation;
+  late final TextEditingController _controller;
+
+  bool get _isPassword => widget.label.toLowerCase().contains("password");
+
+  IconButton _buildObscureEye() {
+    return IconButton(
+      onPressed: () => setState(() => _isObscured = !_isObscured),
+      icon: Icon(_isObscured ? Icons.visibility_off_rounded : Icons.visibility_rounded),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _validation = Validation.fromLabel(widget.label);
+    _controller = widget.controller.controllers[widget.label]!;
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      obscureText: label == "Password",
-      validator: (value) => LoginController.validation(value, label),
+      controller: _controller,
+      obscureText: _isPassword,
+      validator: _validation.validateAll,
       decoration: InputDecoration(
         hintMaxLines: 1,
-        label: Text(label),
-        hintText: "Enter your $label",
-        prefixIcon: (label == "Name" || label == "Phone") ? null : Icon(icon),
-        suffixIcon: (label == "Password") ? const Icon(Icons.visibility_off_rounded) : null,
+        label: Text(widget.label),
+        prefixIcon: Icon(widget.icon),
+        hintText: "Enter your ${widget.label}",
+        suffixIcon: _isPassword ? _buildObscureEye() : null,
       ),
     );
   }

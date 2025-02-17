@@ -6,6 +6,7 @@ import '../../resources/constants.dart';
 import '../../resources/routes.dart';
 import '../widgets/custom_text_form_field.dart';
 import '../widgets/shareable_widgets_signin_signup.dart';
+import 'register_controller.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -15,7 +16,10 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  static final formKey = GlobalKey<FormState>();
+  final controller = RegisterController();
+
+  @override
+  void dispose() => {controller.dispose(), super.dispose()};
 
   @override
   Widget build(BuildContext context) {
@@ -30,25 +34,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
         child: Form(
-          key: formKey,
+          key: controller.formKey,
           child: Column(
             spacing: 20,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomImage(width: 200.w, height: 200.h),
               const CustomTextAuth(title: "Register To New Account"),
-              CustomTextFormField(label: "UserName", icon: Icons.person),
-              CustomTextFormField(label: "Email", icon: Icons.email_sharp),
-              CustomTextFormField(label: "Phone", icon: Icons.phone_android_rounded),
-              CustomTextFormField(label: "Password", icon: Icons.person),
-              //
+              CustomTextFormField(label: "Username", icon: Icons.person, controller: controller),
+              CustomTextFormField(label: "Email", icon: Icons.email_sharp, controller: controller),
+              CustomTextFormField(label: "Phone", icon: Icons.phone_android_rounded, controller: controller),
+              CustomTextFormField(label: "Password", icon: Icons.person, controller: controller),
               ElevatedButton(
-                onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size.fromHeight(50),
                   maximumSize: Size.fromHeight(150),
                   backgroundColor: ConstantColor.buttonsColor,
                 ),
+                onPressed: () => controller.authenticate(),
                 child: Text("Register", style: TextStyle(color: Colors.white, fontSize: 25.h)),
               ),
               _buildLoginRow()
