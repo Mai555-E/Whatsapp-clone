@@ -1,6 +1,7 @@
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:whatsapp_clone_app/presentation/chat/chat_details.dart';
 import 'package:whatsapp_clone_app/presentation/resources/images.dart';
 
 import '../main/custom_popup_menu_button.dart';
@@ -115,12 +116,15 @@ class _ChatScreenState extends State<ChatScreen> {
   AppBar _buildAppBar() {
     return AppBar(
       leading: IconButton(onPressed: () => Get.back(), icon: Icon(Icons.arrow_back_ios)),
-      title: Row(
-        spacing: 8,
-        children: [
-          CircleAvatar(backgroundImage: AssetImage(NamedImages.profileSoloLeveling), radius: 20),
-          Text(name, style: const TextStyle(fontSize: 28)),
-        ],
+      title: GestureDetector(
+        onTap: ()=> Get.to(ChatDetails()),
+        child: Row(
+          spacing: 8,
+          children: [
+            CircleAvatar(backgroundImage: AssetImage(NamedImages.profileSoloLeveling), radius: 20),
+            Text(name, style: const TextStyle(fontSize: 28)),
+          ],
+        ),
       ),
       leadingWidth: 20,
       actions: const [

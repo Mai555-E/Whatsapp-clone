@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
 import '../resources/data.dart';
 import '../resources/images.dart';
 import 'shareable_widget/chat_details_shareable_widgets.dart';
@@ -41,7 +42,7 @@ class _ChatDetailsState extends State<ChatDetails> {
         controller: _sliverScroller,
         slivers: [
           SliverAppBar(
-            leading: IconButton(icon: const Icon(Icons.arrow_back_ios), onPressed: () {}),
+            leading: IconButton(icon: const Icon(Icons.arrow_back_ios), onPressed: ()=> Get.back()),
             actions: [
               TextButton(onPressed: () {}, child: const Text("Edit", style: TextStyle(color: Colors.black))),
             ],
