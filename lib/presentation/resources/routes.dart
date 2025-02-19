@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:whatsapp_clone_app/presentation/chat/chat_details.dart';
 
 import '../auth/login/login_screen.dart';
-import '../auth/otp_screen.dart';
+import '../auth/otp/otp_screen.dart';
 import '../auth/profile_screen.dart';
 import '../auth/register/register_screen.dart';
 import '../chat/chat_screen.dart';

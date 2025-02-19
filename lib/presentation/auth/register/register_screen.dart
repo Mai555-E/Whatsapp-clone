@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../data/app_api.dart';
 import '../../resources/constants.dart';
 import '../../resources/routes.dart';
 import '../widgets/custom_text_form_field.dart';
@@ -17,7 +18,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final controller = RegisterController();
-
+  static final service = AppServiceClient();
   @override
   void dispose() => {controller.dispose(), super.dispose()};
 
@@ -51,7 +52,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   maximumSize: Size.fromHeight(150),
                   backgroundColor: ConstantColor.buttonsColor,
                 ),
-                onPressed: () => controller.authenticate(),
+                onPressed: () async {
+                  if (await controller.authenticate()) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Sign up successfully")));
+                    Get.toNamed(NamedRoutes.loginScreen);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Sign up Failed")));
+                  }
+                },
                 child: Text("Register", style: TextStyle(color: Colors.white, fontSize: 25.h)),
               ),
               _buildLoginRow()

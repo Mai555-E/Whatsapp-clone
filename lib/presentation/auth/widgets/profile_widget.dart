@@ -21,3 +21,17 @@ class CustomCircularAvatar extends StatelessWidget {
     ]);
   }
 }
+
+class CustomProfileTextFormField extends StatelessWidget {
+  final String label;
+
+  const CustomProfileTextFormField({super.key, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      decoration: InputDecoration(
+          hintMaxLines: 1, label: Text(label, style: TextStyle(fontWeight: FontWeight.w500)), hintText: "Enter your $label"),
+    );
+  }
+}

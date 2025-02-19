@@ -16,7 +16,7 @@ class WhatsappClone extends StatelessWidget {
           theme: AppTheme.getTheme(),
           debugShowCheckedModeBanner: false,
           getPages: RouteGenerator.getRoute(),
-          initialRoute: NamedRoutes.loginScreen,
+          initialRoute: NamedRoutes.profileScreen,
          //home: ChatDetails(),
         );
       },

@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 
-import '../resources/constants.dart';
+import '../../resources/constants.dart';
 import 'package:flutter/material.dart';
 
-import 'otp_screen/controller.dart';
-import 'otp_screen/otp_custom.dart';
+import 'controller.dart';
+import 'otp_custom.dart';
 
 class OtpScreen extends StatefulWidget {
   final String phone;

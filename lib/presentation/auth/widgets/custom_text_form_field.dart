@@ -22,10 +22,11 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
   IconButton _buildObscureEye() {
     return IconButton(
-      onPressed: () => setState(() => _isObscured = !_isObscured),
-      icon: Icon(_isObscured ? Icons.visibility_off_rounded : Icons.visibility_rounded),
-    );
+        onPressed: () => setState(() => _isObscured = !_isObscured),
+        icon: Icon(_isObscured ? Icons.visibility_off_rounded : Icons.visibility_rounded));
   }
+
+  bool isObscured() => (!_isPassword) ? _isPassword : _isPassword == _isObscured;
 
   @override
   void initState() {
@@ -38,7 +39,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: _controller,
-      obscureText: _isPassword,
+      obscureText: _isObscured,
       validator: _validation.validateAll,
       decoration: InputDecoration(
         hintMaxLines: 1,

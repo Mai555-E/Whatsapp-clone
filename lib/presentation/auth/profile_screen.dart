@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:whatsapp_clone_app/presentation/auth/widgets/profile_widget.dart';
 
 import '../main/main_view.dart';
 import '../resources/constants.dart';
@@ -48,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: Column(
-          spacing: 20,
+          spacing: 25,
           children: [
             // circular avatar and image
             Stack(
@@ -70,6 +71,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
             const Divider(),
+            CustomProfileTextFormField(label: "Name"),
+            CustomProfileTextFormField(label: "Phone"),
+
             // CustomTextFormField(icon: Icons.person, label: "Name"),
             // CustomTextFormField(icon: Icons.phone_android_rounded, label: "Phone"),
             _buildElevatedButton()
